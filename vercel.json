@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm --filter @my-knowledge/contracts gen-types && --filter @my-knowledge/contracts build && pnpm --filter web build",
+  "buildCommand": "pnpm --filter @my-knowledge/contracts gen-types && pnpm --filter @my-knowledge/contracts build && pnpm --filter web build",
   "devCommand": "pnpm dev:web",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
