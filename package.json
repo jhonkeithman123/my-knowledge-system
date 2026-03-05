@@ -10,6 +10,8 @@
     "dev:mobile": "pnpm --filter mobile start",
     "build": "turbo run build",
     "build:contracts": "pnpm --filter @my-knowledge/contracts build",
+    "gen-types": "pnpm --filter @my-knowledge/contracts gen-types",
+    "gen-types:rebuild": "pnpm --filter @my-knowledge/contracts gen-types:rebuild",
     "lint": "turbo run lint",
     "restart:web": "pnpm build:contracts && pnpm dev:web",
     "clean": "bash ./scripts/clean.sh",
