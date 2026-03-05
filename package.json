@@ -1,0 +1,35 @@
+{
+  "name": "my-knowledge",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:server": "pnpm --filter server dev",
+    "dev:mobile": "pnpm --filter mobile start",
+    "build": "turbo run build",
+    "build:contracts": "pnpm --filter @my-knowledge/contracts build",
+    "lint": "turbo run lint",
+    "restart:web": "pnpm build:contracts && pnpm dev:web",
+    "clean": "bash ./scripts/clean.sh",
+    "clean:win": "powershell - ExecutionPolicy Bypass -File ./scripts/clean.ps1",
+    "deep-clean": "bash ./scripts/deep-clean.sh",
+    "fresh": "pnpm clean && pnpm install && pnpm build:contracts",
+    "fresh-start": "pnpm fresh && pnpm dev:web"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "devDependencies": {
+    "@types/node": "^20.19.35",
+    "turbo": "^2.8.13",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "tsc": "^2.0.4",
+    "zod": "^4.3.6"
+  }
+}

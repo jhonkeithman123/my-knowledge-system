@@ -1,0 +1,6 @@
+{
+  "name": "@my-knowledge/db",
+  "version": "0.0.1",
+  "main": "supabaseClient.ts",
+  "types": "supabaseClient.ts"
+}
