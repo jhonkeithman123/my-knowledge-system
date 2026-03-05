@@ -13,8 +13,10 @@
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "@my-knowledge/config": "workspace:*",
     "@my-knowledge/contracts": "workspace:*",
-    "@my-knowledge/db": "workspace:*"
+    "@my-knowledge/db": "workspace:*",
+    "@my-knowledge/utils": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

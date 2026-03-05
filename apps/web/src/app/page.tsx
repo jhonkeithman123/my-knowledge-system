@@ -1,32 +1,20 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { supabase } from "@my-knowledge/db";
+import { supabaseServer } from "@my-knowledge/db/supabaseServer";
 import Link from "next/link";
 
-export default function Home() {
-  const [topics, setTopics] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function Home() {
+  // Fetch directly on the server - no useState needed!
+  const { data: topics, error } = await supabaseServer
+    .from("topics")
+    .select("*")
+    .is("parent_id", null)
+    .order("created_at", { ascending: false });
 
-  useEffect(() => {
-    const fetchTopics = async () => {
-      const { data, error } = await supabase
-        .from("topics")
-        .select("*")
-        .is("parent_id", null) // Only root topics
-        .order("created_at", { ascending: false });
-
-      if (error) console.error(error);
-      else setTopics(data || []);
-      setLoading(false);
-    };
-    fetchTopics();
-  }, []);
+  if (error) console.error(error);
 
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-4">
+        <h1 className="text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-4">
           Welcome to Knowledge Management System
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
@@ -34,17 +22,13 @@ export default function Home() {
         </p>
         <Link
           href="/topic/new"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-600 dark:hover:to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          className="inline-block px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-600 dark:hover:to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
         >
           Create Your First Topic
         </Link>
       </div>
 
-      {loading ? (
-        <div className="text-center">
-          <p className="text-gray-500 dark:text-gray-400">Loading topics...</p>
-        </div>
-      ) : topics.length > 0 ? (
+      {topics && topics.length > 0 ? (
         <div>
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
             Recent Topics

@@ -1,44 +1,25 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { supabase } from "@my-knowledge/db";
+import { supabaseServer } from "@my-knowledge/db/supabaseServer";
 import { TopicSchema, Topic } from "@my-knowledge/contracts";
 import Link from "next/link";
 
-export default function TopicsPage() {
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function TopicsPage() {
+  // Fetch on server
+  const { data, error } = await supabaseServer
+    .from("topics")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-  useEffect(() => {
-    const fetchTopics = async () => {
-      const { data, error } = await supabase
-        .from("topics")
-        .select("*")
-        .order("created_at", { ascending: false });
+  if (error) {
+    console.error(error);
+    return <div>Error loading topics</div>;
+  }
 
-      if (error) {
-        console.error(error);
-        setLoading(false);
-      } else {
-        try {
-          // Validate with Zod
-          const normalized = data.map((t) => ({
-            ...t,
-            created_at: t.created_at
-              ? new Date(t.created_at).toISOString()
-              : undefined,
-          }));
+  const normalized = (data || []).map((t) => ({
+    ...t,
+    created_at: t.created_at ? new Date(t.created_at).toISOString() : undefined,
+  }));
 
-          const validated = TopicSchema.array().parse(normalized);
-          setTopics(validated);
-        } catch (validationError) {
-          console.error("Validation failed:", validationError);
-        }
-        setLoading(false);
-      }
-    };
-    fetchTopics();
-  }, []);
+  const topics = TopicSchema.array().parse(normalized);
 
   const rootTopics = topics.filter((t) => !t.parent_id);
   const subtopicsByParent = topics.reduce(
@@ -60,17 +41,13 @@ export default function TopicsPage() {
         </h1>
         <Link
           href="/topic/new"
-          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-purple-700 shadow-md hover:shadow-lg transition-all"
+          className="px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-purple-700 shadow-md hover:shadow-lg transition-all"
         >
           + New Topic
         </Link>
       </div>
 
-      {loading ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">Loading topics...</p>
-        </div>
-      ) : topics.length === 0 ? (
+      {topics.length === 0 ? (
         <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600">
           <p className="text-gray-500 dark:text-gray-400 mb-4">No topics yet</p>
           <Link

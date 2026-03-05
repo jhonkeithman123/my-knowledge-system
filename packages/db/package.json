@@ -2,5 +2,9 @@
   "name": "@my-knowledge/db",
   "version": "0.0.1",
   "main": "supabaseClient.ts",
-  "types": "supabaseClient.ts"
+  "types": "supabaseClient.ts",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "@my-knowledge/config": "workspace:*"
+  }
 }

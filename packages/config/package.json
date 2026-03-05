@@ -1,0 +1,12 @@
+{
+  "name": "@my-knowledge/config",
+  "version": "1.0.0",
+  "main": "./env-loader.ts",
+  "types": "./env-loader.ts",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
+}
