@@ -5,7 +5,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "gen-types": "tsx scripts/generate-schemas.ts"
+    "gen-types": "tsx scripts/generate-schemas.ts",
+    "gen-types:rebuild": "rm ./src/generated.ts && pnpm gen-types"
   },
   "devDependencies": {
     "tsx": "^4.21.0",

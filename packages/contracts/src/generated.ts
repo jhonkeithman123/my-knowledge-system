@@ -1,7 +1,7 @@
 // ============================================
 // AUTO-GENERATED SCHEMAS - DO NOT EDIT MANUALLY
 // ============================================
-// Generated at: 2026-03-05T08:38:31.222Z
+// Generated at: 2026-03-05T09:41:08.613Z
 // Run 'pnpm generate:schemas' to regenerate
 // Database: https://kwejallgwtyswycnhaca.supabase.co
 // ============================================
@@ -101,6 +101,6 @@ export function validateUpdateConcept(data: unknown): UpdateConcept {
 // ============================================
 // DATABASE STATS (at generation time)
 // ============================================
-// Topics count: 3
-// Concepts count: 2
-// Last generated: 2026-03-05T08:38:31.227Z
+// Topics count: 5
+// Concepts count: 3
+// Last generated: 2026-03-05T09:41:08.613Z
