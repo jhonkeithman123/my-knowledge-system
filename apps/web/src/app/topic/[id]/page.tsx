@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DeleteTopicButton } from "@/components/DeleteTopicButton";
 import { DeleteConceptButton } from "@/components/DeleteConceptButton";
+import { ConceptActions } from "@/components/ConceptActions";
 
 async function buildBreadcrumbs(topicId: string): Promise<Topic[]> {
   const breadcrumbs: Topic[] = [];
@@ -135,13 +136,21 @@ export default async function TopicDetailPage({
               </p>
             )}
           </div>
-          <DeleteTopicButton
-            topicId={topic.id}
-            topicName={topic.name}
-            parentId={topic.parent_id}
-            hasSubtopics={subtopics.length > 0}
-            hasConcepts={concepts.length > 0}
-          />
+          <div className="flex gap-3">
+            <Link
+              href={`/topic/${topic.id}/edit`}
+              className="px-4 py-2 bg-linear-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 shadow-md hover:shadow-lg transition-all"
+            >
+              ✏️ Edit
+            </Link>
+            <DeleteTopicButton
+              topicId={topic.id}
+              topicName={topic.name}
+              parentId={topic.parent_id}
+              hasSubtopics={subtopics.length > 0}
+              hasConcepts={concepts.length > 0}
+            />
+          </div>
         </div>
       </div>
 
@@ -215,24 +224,21 @@ export default async function TopicDetailPage({
             {concepts.map((concept) => (
               <div
                 key={concept.id}
-                className="relative group p-4 bg-gray-50 dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700"
+                className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-600 transition-all"
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                      {concept.name}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      {concept.definition}
-                    </p>
-                  </div>
-                  <DeleteConceptButton
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex-1">
+                    {concept.name}
+                  </h3>
+                  <ConceptActions
                     conceptId={concept.id}
                     conceptName={concept.name}
                     topicId={topicId}
-                    isSubtopic={false}
                   />
                 </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {concept.definition}
+                </p>
               </div>
             ))}
           </div>
