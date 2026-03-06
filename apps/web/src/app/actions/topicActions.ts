@@ -1,7 +1,12 @@
 "use server";
 
 import { supabaseServer } from "@my-knowledge/db/supabaseServer";
-import { NewTopicSchema, NewConceptSchema } from "@my-knowledge/contracts";
+import {
+  NewTopicSchema,
+  NewConceptSchema,
+  UpdateTopicSchema,
+  UpdateConceptSchema,
+} from "@my-knowledge/contracts";
 import { revalidatePath } from "next/cache";
 import {
   CreationError,
@@ -47,6 +52,49 @@ export async function createTopic(formData: FormData): Promise<ApiResponse> {
     }
 
     return toErrorResponse(error);
+  }
+}
+
+export async function updateTopic(
+  topicId: string,
+  formData: FormData,
+): Promise<ApiResponse> {
+  const rawData = {
+    name: formData.get("name") as string,
+    description: (formData.get("description") as string) || undefined,
+    parent_id: (formData.get("parent_id") as string) || undefined,
+  };
+
+  try {
+    const validated = UpdateTopicSchema.parse(rawData);
+
+    const { data, error } = await supabaseServer
+      .from("topics")
+      .update(validated)
+      .eq("id", topicId)
+      .select()
+      .single();
+
+    if (error) throw handleSupabaseError(error, "update", "topics");
+    if (!data)
+      throw new CreationError("topic", "No data returned from database");
+
+    // Revalidate affected pages
+    revalidatePath("/");
+    revalidatePath("/topic");
+    revalidatePath(`/topic/${topicId}`);
+
+    if (validated.parent_id) {
+      revalidatePath(`/topic/${validated.parent_id}`);
+    }
+
+    return toSuccessResponse(data);
+  } catch (e: any) {
+    if (e.name === "ZodError") {
+      return toErrorResponse(handleZodError(e, "topic"));
+    }
+
+    return toErrorResponse(e);
   }
 }
 
@@ -115,6 +163,42 @@ export async function createConcept(formData: FormData): Promise<ApiResponse> {
     }
 
     return toErrorResponse(error);
+  }
+}
+
+export async function updateConcept(
+  conceptId: string,
+  topicId: string,
+  formData: FormData,
+): Promise<ApiResponse> {
+  const rawData = {
+    name: formData.get("name") as string,
+    definition: formData.get("definition") as string,
+  };
+
+  try {
+    const validated = UpdateConceptSchema.parse(rawData);
+
+    const { data, error } = await supabaseServer
+      .from("concepts")
+      .update(validated)
+      .eq("id", conceptId)
+      .select()
+      .single();
+
+    if (error) throw handleSupabaseError(error, "update", "concepts");
+    if (!data)
+      throw new CreationError("concept", "No data returned from database");
+
+    revalidatePath(`/topic/${topicId}`);
+
+    return toSuccessResponse(data);
+  } catch (e: any) {
+    if (e.name === "ZodError") {
+      return toErrorResponse(handleZodError(e, "concept"));
+    }
+
+    return toErrorResponse(e);
   }
 }
 

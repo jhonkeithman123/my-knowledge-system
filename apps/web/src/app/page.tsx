@@ -12,12 +12,12 @@ export default async function Home() {
   if (error) console.error(error);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-4">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-4">
           Welcome to Knowledge Management System
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 sm:mb-8 px-4">
           Organize your knowledge with topics, subtopics, and concepts
         </p>
         <Link
@@ -30,17 +30,17 @@ export default async function Home() {
 
       {topics && topics.length > 0 ? (
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
             Recent Topics
           </h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {topics.slice(0, 6).map((t) => (
               <Link
                 key={t.id}
                 href={`/topic/${t.id}`}
-                className="block p-6 bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transform hover:-translate-y-1"
+                className="block p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transform hover:-translate-y-1"
               >
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                   {t.name}
                 </h3>
                 {t.description && (
