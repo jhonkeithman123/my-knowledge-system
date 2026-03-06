@@ -13,12 +13,21 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
             try {
-                const theme = localStorage.getItem('theme');
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (theme === 'dark' || (!theme && prefersDark)) {
-                  document.documentElement.classList.add('dark');
-                }
-              } catch (e) {}
+              const theme = localStorage.getItem('theme') || 'system';
+              const root = document.documentElement;
+              
+              const getSystemTheme = () => {
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              };
+              
+              const resolvedTheme = theme === 'system' ? getSystemTheme() : theme;
+              
+              if (resolvedTheme === 'dark') {
+                root.classList.add('dark');
+              } else {
+                root.classList.remove('dark');
+              }
+            } catch (e) {}
             `,
           }}
         />

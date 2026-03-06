@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+/* Force class-based dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not(.dark) {
+    color-scheme: light;
+  }
+}
 
 /* Smooth transitions for theme changes */
 * {
