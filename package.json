@@ -5,11 +5,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm dev:web",
+    "dev": "turbo run dev --parallel",
     "dev:web": "pnpm --filter web dev",
     "dev:server": "pnpm --filter server dev",
     "dev:mobile": "pnpm --filter mobile start",
+    "dev:all": "turbo run dev --parallel",
+    "mobile:android": "pnpm --filter mobile android",
     "build": "turbo run build",
+    "build:server": "pnpm --filter server build",
     "build:contracts": "pnpm --filter @my-knowledge/contracts build",
     "gen-types": "pnpm --filter @my-knowledge/contracts gen-types",
     "gen-types:rebuild  ": "pnpm --filter @my-knowledge/contracts gen-types:rebuild",
@@ -17,14 +20,15 @@
     "restart:web": "pnpm build:contracts && pnpm dev:web",
     "clean": "bash ./scripts/clean.sh",
     "clean:win": "powershell - ExecutionPolicy Bypass -File ./scripts/clean.ps1",
-    "deep-clean": "bash ./scripts/deep-clean.sh",
+    "clean:deep": "bash ./scripts/deep-clean.sh",
     "fresh": "pnpm clean && pnpm install && pnpm build:contracts",
-    "fresh-start": "pnpm fresh && pnpm dev:web"
+    "start:server": "pnpm --filter server start",
+    "start:fresh": "pnpm fresh && pnpm dev:web"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.30.3",
   "devDependencies": {
     "@types/node": "^20.19.35",
     "turbo": "^2.8.13",
@@ -34,5 +38,13 @@
     "@supabase/supabase-js": "^2.98.0",
     "tsc": "^2.0.4",
     "zod": "^4.3.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "18.2.0",
+      "react-dom": "18.2.0",
+      "@types/react": "18.2.0",
+      "@types/react-dom": "18.2.0"
+    }
   }
 }

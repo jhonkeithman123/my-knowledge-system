@@ -1,0 +1,11 @@
+{
+  "name": "@my-knowledge/api",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "react-native": "supabaseClient.mobile.js",
+  "dependencies": {
+    "@my-knowledge/contracts": "workspace:*",
+    "@my-knowledge/db": "workspace:*",
+    "@supabase/supabase-js": "^2.98.0"
+  }
+}

@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { DeleteTopicButton } from "@/components/DeleteTopicButton";
 import { DeleteConceptButton } from "@/components/DeleteConceptButton";
 import { ConceptActions } from "@/components/ConceptActions";
+import { ConceptCard } from "@/components/ConceptCard";
+
+export const revalidate = 60; // Revalidate every 60 seconds
 
 async function buildBreadcrumbs(topicId: string): Promise<Topic[]> {
   const breadcrumbs: Topic[] = [];
@@ -42,19 +45,25 @@ export default async function TopicDetailPage({
 }) {
   const topicId = (await params).id;
 
-  // Fetch all data in parallel on the server
+  // Optimize: Only select needed columns
   const [topicResult, subtopicsResult, conceptsResult] = await Promise.all([
-    supabaseServer.from("topics").select("*").eq("id", topicId).single(),
     supabaseServer
       .from("topics")
-      .select("*")
+      .select("id, name, description, parent_id, created_at")
+      .eq("id", topicId)
+      .single(),
+    supabaseServer
+      .from("topics")
+      .select("id, name, description, parent_id, created_at")
       .eq("parent_id", topicId)
-      .order("created_at", { ascending: false }),
+      .order("created_at", { ascending: false })
+      .limit(100),
     supabaseServer
       .from("concepts")
-      .select("*")
+      .select("id, name, definition, topic_id, created_at")
       .eq("topic_id", topicId)
-      .order("created_at", { ascending: false }),
+      .order("created_at", { ascending: false })
+      .limit(100),
   ]);
 
   if (topicResult.error || !topicResult.data) {
@@ -222,24 +231,11 @@ export default async function TopicDetailPage({
         ) : (
           <div className="space-y-4">
             {concepts.map((concept) => (
-              <div
+              <ConceptCard
                 key={concept.id}
-                className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-600 transition-all"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex-1">
-                    {concept.name}
-                  </h3>
-                  <ConceptActions
-                    conceptId={concept.id}
-                    conceptName={concept.name}
-                    topicId={topicId}
-                  />
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {concept.definition}
-                </p>
-              </div>
+                concept={concept}
+                topicId={topicId}
+              />
             ))}
           </div>
         )}

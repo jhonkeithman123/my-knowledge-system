@@ -7,7 +7,7 @@ import {
   UpdateTopicSchema,
   UpdateConceptSchema,
 } from "@my-knowledge/contracts";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import {
   CreationError,
   DeleteError,
@@ -28,18 +28,19 @@ export async function createTopic(formData: FormData): Promise<ApiResponse> {
   try {
     const validated = NewTopicSchema.parse(rawData);
 
+    // Optimize: Only select needed fields for response
     const { data, error } = await supabaseServer
       .from("topics")
       .insert(validated)
-      .select()
+      .select("id, name, description, parent_id, created_at")
       .single();
 
     if (error) throw handleSupabaseError(error, "insert", "topics");
     if (!data)
       throw new CreationError("topic", "No data returned from database");
 
-    // Revalidate affected pages
-    revalidatePath("/");
+    // Revalidate more aggressively
+    revalidatePath("/", "layout");
     revalidatePath("/topic");
     if (validated.parent_id) {
       revalidatePath(`/topic/${validated.parent_id}`);

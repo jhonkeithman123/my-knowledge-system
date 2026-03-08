@@ -26,16 +26,21 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center gap-4">
                 <Link
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
-                  href="/topic"
+                  href="/search"
+                  className="p-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  title="Search"
                 >
-                  All Topics
-                </Link>
-                <Link
-                  href="/topic/new"
-                  className="px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-600 dark:hover:to-purple-700 shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  + New Topic
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                 </Link>
                 <ThemeToggle />
               </div>
