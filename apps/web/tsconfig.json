@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@my-knowledge/config": ["../../packages/config"],
       "@my-knowledge/db": ["../../packages/db"],
       "@my-knowledge/contracts": ["../../packages/contracts/src"]
     }

@@ -4,31 +4,35 @@
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "turbo run dev --parallel",
-    "dev:web": "pnpm --filter web dev",
-    "dev:server": "pnpm --filter server dev",
-    "dev:mobile": "pnpm --filter mobile start",
-    "dev:all": "turbo run dev --parallel",
-    "mobile:android": "pnpm --filter mobile android",
+    "dev": "turbo run dev --ui=tui",
+    "dev:web": "bun --filter web dev",
+    "dev:server": "bun --filter server dev",
+    "dev:mobile": "bun --filter mobile start",
+    "dev:all": "turbo run dev --ui=tui",
+    "mobile:android": "bun --filter mobile android",
     "build": "turbo run build",
-    "build:server": "pnpm --filter server build",
-    "build:contracts": "pnpm --filter @my-knowledge/contracts build",
-    "gen-types": "pnpm --filter @my-knowledge/contracts gen-types",
-    "gen-types:rebuild  ": "pnpm --filter @my-knowledge/contracts gen-types:rebuild",
+    "build:server": "bun --filter server build",
+    "build:contracts": "bun --filter @my-knowledge/contracts build",
+    "gen-types": "bun --filter @my-knowledge/contracts gen-types",
+    "gen-types:rebuild": "bun --filter @my-knowledge/contracts gen-types:rebuild",
     "lint": "turbo run lint",
-    "restart:web": "pnpm build:contracts && pnpm dev:web",
+    "restart:web": "bun build:contracts && bun dev:web",
     "clean": "bash ./scripts/clean.sh",
     "clean:win": "powershell - ExecutionPolicy Bypass -File ./scripts/clean.ps1",
     "clean:deep": "bash ./scripts/deep-clean.sh",
-    "fresh": "pnpm clean && pnpm install && pnpm build:contracts",
-    "start:server": "pnpm --filter server start",
-    "start:fresh": "pnpm fresh && pnpm dev:web"
+    "fresh": "bun run clean && bun install && bun build:contracts",
+    "start:server": "bun --filter server start",
+    "start:fresh": "bun run fresh && bun dev:web"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "bun@1.1.42",
   "devDependencies": {
     "@types/node": "^20.19.35",
     "turbo": "^2.8.13",
@@ -39,12 +43,10 @@
     "tsc": "^2.0.4",
     "zod": "^4.3.6"
   },
-  "pnpm": {
-    "overrides": {
-      "react": "18.2.0",
-      "react-dom": "18.2.0",
-      "@types/react": "18.2.0",
-      "@types/react-dom": "18.2.0"
-    }
+  "resolutions": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
   }
 }

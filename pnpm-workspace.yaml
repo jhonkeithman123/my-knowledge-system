@@ -1,9 +1,0 @@
-packages:
-  - apps/*
-  - packages/*
-  - docs
-
-ignoredBuiltDependencies:
-  - esbuild
-  - sharp
-  - unrs-resolver

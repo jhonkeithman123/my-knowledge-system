@@ -14,10 +14,11 @@ bash ./scripts/clean.sh
 
 echo ""
 echo "🔒 Removing lock files..."
+find . -name "bun.lockb" -type f -delete && echo "  ❌ Removed bun.lockb files"
 find . -name "pnpm-lock.yaml" -type f -delete && echo "  ❌ Removed pnpm-lock.yaml files"
 find . -name "package-lock.json" -type f -delete && echo "  ❌ Removed package-lock.json files"
 find . -name "yarn.lock" -type f -delete && echo "  ❌ Removed yarn.lock files"
 
 echo ""
 echo "🔥 Deep clean complete!"
-echo "💡 Run 'pnpm install' to regenerate lock files and install dependencies"
+echo "💡 Run 'bun install' to regenerate lock files and install dependencies"

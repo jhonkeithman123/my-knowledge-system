@@ -4,9 +4,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "bun build src/index.ts --outdir dist --target node && bun x tsc --emitDeclarationOnly",
     "gen-types": "tsx scripts/generate-schemas.ts",
-    "gen-types:rebuild": "rm ./src/generated.ts && pnpm gen-types"
+    "gen-types:rebuild": "rm ./src/generated.ts && bun run gen-types"
   },
   "devDependencies": {
     "tsx": "^4.21.0",

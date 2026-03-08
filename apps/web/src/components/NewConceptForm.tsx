@@ -23,9 +23,9 @@ export function NewConceptForm({
 
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
-      const result = await createConcept(formData);
+    const result = await createConcept(formData);
 
+    startTransition(() => {
       if (result.success) {
         router.push(`/topic/${topicId}`);
         router.refresh();

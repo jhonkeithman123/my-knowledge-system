@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useOptimistic } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createTopic } from "@/app/actions/topicActions";
 
@@ -9,23 +9,19 @@ export function NewTopicForm({ parentId }: { parentId?: string }) {
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
-  const [optimisticState, setOptimisticState] = useOptimistic(
-    { submitted: false },
-    (state) => ({ submitted: true }),
-  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setFieldErrors({});
+    setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
-      setOptimisticState({ submitted: true });
+    const result = await createTopic(formData);
 
-      const result = await createTopic(formData);
-
+    startTransition(() => {
       if (result.success) {
         // Pre-navigate optimistically
         if (parentId) {
@@ -36,6 +32,7 @@ export function NewTopicForm({ parentId }: { parentId?: string }) {
         router.refresh();
       } else {
         setError(result.error);
+        setIsSubmitting(false);
 
         if (result.details?.field) {
           setFieldErrors({ [result.details.field]: result.error });
@@ -44,7 +41,7 @@ export function NewTopicForm({ parentId }: { parentId?: string }) {
     });
   };
 
-  if (optimisticState.submitted && isPending) {
+  if (isSubmitting && isPending) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 p-6">
         <div className="text-center py-8">

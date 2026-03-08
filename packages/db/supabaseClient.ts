@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { config } from "@my-knowledge/config/env-loader";
+import { config } from "@my-knowledge/config";
 
 const supabaseUrl = config.supabaseUrl;
 const supabaseAnonKey = config.supabaseAnonKey;

@@ -26,9 +26,9 @@ export function EditConceptForm({
 
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
-      const result = await updateConcept(concept.id, topicId, formData);
+    const result = await updateConcept(concept.id, topicId, formData);
 
+    startTransition(() => {
       if (result.success) {
         router.push(`/topic/${topicId}`);
         router.refresh();

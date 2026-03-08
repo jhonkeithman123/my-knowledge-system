@@ -18,9 +18,9 @@ export function EditTopicForm({ topic }: { topic: Topic }) {
 
     const formData = new FormData(e.currentTarget);
 
-    startTransition(async () => {
-      const result = await updateTopic(topic.id, formData);
+    const result = await updateTopic(topic.id, formData);
 
+    startTransition(() => {
       if (result.success) {
         router.push(`/topic/${topic.id}`);
         router.refresh();
