@@ -1,8 +1,17 @@
 {
   "name": "@my-knowledge/config",
   "version": "1.0.0",
+  "type": "module",
   "main": "./env-loader.ts",
   "types": "./env-loader.ts",
+  "exports": {
+    ".": "./env-loader.ts",
+    "./env-loader": {
+      "react-native": "./env-loader.mobile.ts",
+      "default": "./env-loader.ts"
+    },
+    "./env-loader.mobile": "./env-loader.mobile.ts"
+  },
   "devDependencies": {
     "typescript": "^5.9.3"
   },

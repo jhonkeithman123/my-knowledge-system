@@ -2,7 +2,13 @@
   "name": "@my-knowledge/api",
   "version": "0.0.1",
   "main": "src/index.ts",
-  "react-native": "supabaseClient.mobile.js",
+  "react-native": "src/index.mobile.ts",
+  "exports": {
+    ".": {
+      "react-native": "./src/index.mobile.ts",
+      "default": "./src/index.ts"
+    }
+  },
   "dependencies": {
     "@my-knowledge/contracts": "workspace:*",
     "@my-knowledge/db": "workspace:*",

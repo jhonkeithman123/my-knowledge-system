@@ -1,12 +1,18 @@
 {
   "name": "@my-knowledge/db",
   "version": "0.0.1",
+  "type": "module",
   "main": "supabaseClient.js",
   "react-native": "supabaseClient.mobile.ts",
   "exports": {
     ".": {
       "react-native": "./supabaseClient.mobile.ts",
       "default": "./supabaseClient.ts"
-    }
+    },
+    "./supabaseServer": "./supabaseServer.ts"
+  },
+  "dependencies": {
+    "@my-knowledge/config": "workspace:*",
+    "@supabase/supabase-js": "^2.98.0"
   }
 }

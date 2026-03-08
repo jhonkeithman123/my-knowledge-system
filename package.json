@@ -5,13 +5,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev --ui=tui",
     "dev:web": "pnpm --filter web dev",
     "dev:server": "pnpm --filter server dev",
     "dev:mobile": "pnpm --filter mobile start",
-    "dev:all": "turbo run dev --parallel",
+    "dev:all": "turbo run dev --ui=tui",
     "mobile:android": "pnpm --filter mobile android",
-    "build": "turbo run build",
+    "build": "turbo run build --ui=tui",
     "build:server": "pnpm --filter server build",
     "build:contracts": "pnpm --filter @my-knowledge/contracts build",
     "gen-types": "pnpm --filter @my-knowledge/contracts gen-types",
@@ -41,10 +41,10 @@
   },
   "pnpm": {
     "overrides": {
-      "react": "18.2.0",
-      "react-dom": "18.2.0",
-      "@types/react": "18.2.0",
-      "@types/react-dom": "18.2.0"
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "@types/react": "19.1.0",
+      "@types/react-dom": "19.1.0"
     }
   }
 }

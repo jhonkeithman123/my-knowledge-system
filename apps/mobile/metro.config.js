@@ -1,18 +1,34 @@
 // apps/mobile/metro.config.js
 const { getDefaultConfig } = require("expo/metro-config");
+const path = require("path");
 
 const config = getDefaultConfig(__dirname);
 
-// Add support for workspace packages
+const workspaceRoot = path.resolve(__dirname, "../..");
+const packagesPath = path.resolve(workspaceRoot, "packages");
+
+// Watch workspace folders
 config.watchFolders = [
-  __dirname,
-  require("path").resolve(__dirname, "../../packages"),
+  workspaceRoot,
+  packagesPath,
+  path.resolve(packagesPath, "api"),
+  path.resolve(packagesPath, "config"),
+  path.resolve(packagesPath, "contracts"),
+  path.resolve(packagesPath, "db"),
 ];
 
-// Resolve React Native extensions
-config.resolver.sourceExts.push("ts", "tsx");
+// Node module resolution
+config.resolver.nodeModulesPaths = [
+  path.resolve(__dirname, "node_modules"),
+  path.resolve(workspaceRoot, "node_modules"),
+];
 
-// Platform-specific extensions (mobile files take priority)
-config.resolver.resolverMainFields = ["react-native", "browser", "main"];
+// Extra node modules to look for
+config.resolver.extraNodeModules = {
+  "@my-knowledge/api": path.resolve(packagesPath, "api"),
+  "@my-knowledge/config": path.resolve(packagesPath, "config"),
+  "@my-knowledge/contracts": path.resolve(packagesPath, "contracts"),
+  "@my-knowledge/db": path.resolve(packagesPath, "db"),
+};
 
 module.exports = config;
